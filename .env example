@@ -1,0 +1,7 @@
+# Environment configuration example
+NEXT_PUBLIC_API_URL=https://api.example.com
+NEXT_PUBLIC_VERCEL_ENV=development
+
+# Add more variables as needed
+# API_KEY=yourapikeyhere
+# DATABASE_URL=yourdatabaseurlhere
