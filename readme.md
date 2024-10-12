@@ -17,15 +17,15 @@ Welcome to the **Document Signing and PDF Generator** project! This web applicat
 Since this project is built using **HTML**, **CSS**, and **JavaScript**, no special setup is required. Just follow these steps:
 
 1. **Clone the repository**:
-   """
+   ```
    git clone https://github.com/alejandrosuarez/document-signing-pdf-generator.git
    cd document-signing-pdf-generator
-   """
+   ```
 
 2. **Open the `index.html` file** directly in your browser or serve it using a simple HTTP server (like Python's built-in server):
-   """
+   ```
    python3 -m http.server
-   """
+   ```
    Then open your browser at `http://localhost:8000`.
 
 ### 🚀 Deployment on Vercel
@@ -33,11 +33,11 @@ Since this project is built using **HTML**, **CSS**, and **JavaScript**, no spec
 Deploying the app on **Vercel** is easy! Just follow these steps:
 
 1. **Push your repository** to GitHub (or any Git platform):
-   """
+   ```
    git add .
    git commit -m "Initial commit"
    git push origin main
-   """
+   ```
 
 2. **Create a Vercel account** (if you don’t have one) and go to the [Vercel dashboard](https://vercel.com/dashboard).
 
