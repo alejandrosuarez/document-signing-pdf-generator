@@ -29,12 +29,146 @@
       margin-bottom: 20px;
       background-color: #fff;
     }
+    /* Loading Overlay */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      /*display: none;*/ /* Hidden by default */
+    }
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    .dark-mode .modal-content {
+      background-color: #333333;
+      color: #ffffff;
+    }
+
+    .dark-mode .modal-header,
+    .dark-mode .modal-footer {
+      border-color: #666666;
+    }
+
+    .dark-mode .modal-title {
+      color: #ffffff;
+    }
+
+    .dark-mode .signature-pad {
+      border-color: #ffffff;
+    }
+
+    /* Signature line should be white in dark mode */
+    .dark-mode .signature-pad svg path {
+      stroke: #ffffff;
+    }
+
+    .dark-mode .document-area {
+      background-color: #222;
+      color: #fff;
+      border-color: #666;
+    }
+
+    .dark-mode .btn {
+      background-color: #444;
+      border-color: #666;
+      color: #fff;
+    }
+
+    /* Ensure inputs are styled for dark mode */
+    .dark-mode input,
+    .dark-mode select {
+      background-color: #333;
+      color: #fff;
+      border-color: #666;
+    }
+    /* Loader Container */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75); /* Dark background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden; /* Hidden by default */
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s;
+    }
+
+    /* Show the loader */
+    #loading-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Neon Spinner */
+    .neon-spinner {
+      border: 6px solid rgba(255, 255, 255, 0.1);
+      border-left-color: #00ff99; /* Neon color */
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1.2s linear infinite;
+      box-shadow: 0 0 20px #00ff99, 0 0 40px #00ff99, 0 0 60px #00ff99, 0 0 80px #00ff99;
+    }
+
+    /* Animation for spinner */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Glowing Text Below Spinner */
+    #loading-text {
+      color: #00ff99;
+      font-size: 18px;
+      margin-top: 20px;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      text-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99, 0 0 30px #00ff99;
+    }
+    /* Dark mode adjustments */
+    .dark-mode #loading-overlay {
+      background-color: rgba(18, 18, 18, 0.9);
+    }
+
+    .dark-mode .neon-spinner {
+      border-left-color: #00eaff; /* Adjust to a cool blue glow in dark mode */
+      box-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff, 0 0 60px #00eaff, 0 0 80px #00eaff;
+    }
+
+    .dark-mode #loading-text {
+      color: #00eaff;
+      text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff, 0 0 30px #00eaff;
+    }
   </style>
 </head>
 <body>
   <div class="container mt-5">
     <h2 class="text-center">Document Signature</h2>
-
+    <!-- Dark Mode Toggle -->
+    <div class="text-right">
+      <button id="toggle-dark-mode" class="btn btn-dark">Toggle Dark Mode</button>
+    </div>
     <!-- Language and Document Selection -->
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -114,7 +248,11 @@
       </div>
     </div>
   </div>
-
+   <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="neon-spinner"></div>
+    <div id="loading-text"></div>
+  </div>
   <!-- External JS Libraries -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

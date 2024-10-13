@@ -1,6 +1,10 @@
 import { generatePDF } from './pdfGenerator.js';  // Import the generatePDF function
 
 $(document).ready(function() {
+  // Show loading overlay immediately when the page is ready
+  showLoadingOverlay();
+  detectSystemDarkMode();  // Apply the correct mode on load
+
   const formLabels = {
     en: {
       name: "Customer Name",
@@ -50,6 +54,15 @@ $(document).ready(function() {
     return filledTemplate;
   }
 
+  function showLoadingOverlay() {
+    $('#loading-overlay').addClass('show');
+  }
+  
+  // Hide the loading overlay
+  function hideLoadingOverlay() {
+    $('#loading-overlay').removeClass('show');
+  }
+
   // Function to load global and language-specific content and templates, inject the content into the preview and document
   function loadContentAndTemplates(language, userData) {
     // Load global JSON data
@@ -66,8 +79,8 @@ $(document).ready(function() {
               // Fill each document template
               const filledProposal = fillTemplate(proposalTemplate, jsonData.documents[0].content, globalData, userData);
               const filledNDA = fillTemplate(ndaTemplate, jsonData.documents[1].content, globalData, userData);
-              const filledDataProtection = fillTemplate(dataProtectionTemplate, jsonData.documents[2].content, globalData, userData);
-
+              const filledDataProtection = fillTemplate(dataProtectionTemplate, jsonData.documents[2].content, globalData, userData);              
+              
               // Insert the filled documents into the preview, including the signature
               const combinedContent = `
                 <div class="document">
@@ -88,7 +101,8 @@ $(document).ready(function() {
               $('#document .footer').html(`
                 <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
               `);
-
+              // After everything is loaded and inserted:
+              hideLoadingOverlay();  // Hide loading overlay when done
               // Modal preview logic
               $('#preview-document').click(function() {
                 const filledPreviewContent = `
@@ -117,12 +131,11 @@ $(document).ready(function() {
                     </div>
                   </div>
                 `;
-                
                 // Inject content into modal
                 $('#preview-content').html(filledPreviewContent);
                 $('#previewModal').modal('show');
               });
-
+              
               // Handle PDF generation
               $('#accept-document').click(function() {
                 generatePDF(filledProposal, filledNDA, filledDataProtection, signatureDataUrl);
@@ -171,20 +184,30 @@ $(document).ready(function() {
 
   // Initialize SVG canvas for signature
   var draw = SVG().addTo('#signature-pad').size(500, 150);
-  var path;
+  var path = null; // Initialize path as null by default
   var drawing = false;
+
+  function getCurrentStrokeColor() {
+    return $('body').hasClass('dark-mode') ? '#ffffff' : '#000000';
+  }
 
   // Mouse down to start drawing
   $('#signature-pad').on('mousedown touchstart', function(event) {
     drawing = true;
     var pos = getMousePosition(event);
-    path = draw.path().fill('none').stroke({ width: 2, color: '#000' });
+
+    // Adjust the stroke color based on dark mode
+    var strokeColor = getCurrentStrokeColor();
+    path = draw.path().fill('none').stroke({ width: 2, color: strokeColor });
     path.plot(`M ${pos.x} ${pos.y}`);
+    
+    // Add the path to the drawnPaths array
+    drawnPaths.push(path);
   });
 
   // Mouse move to continue drawing
   $('#signature-pad').on('mousemove touchmove', function(event) {
-    if (drawing) {
+    if (drawing && path) {
       var pos = getMousePosition(event);
       var plot = path.array().toString();
       plot += ` L ${pos.x} ${pos.y}`;
@@ -195,6 +218,7 @@ $(document).ready(function() {
   // Mouse up to stop drawing and capture customer signature
   $('#signature-pad').on('mouseup touchend mouseleave', function() {
     drawing = false;
+    path = null;  // Reset path to null after drawing is finished
   
     const svgString = $('#signature-pad').html();
     const canvas = document.createElement('canvas');
@@ -239,5 +263,52 @@ $(document).ready(function() {
   $('#clear-signature').click(function() {
     draw.clear();
     signatureDataUrl = '';  // Reset signature data
+  });
+
+  // Function to toggle dark mode
+  let drawnPaths = [];  // Array to store all drawn paths
+
+  function toggleDarkMode() {
+    $('body').toggleClass('dark-mode');
+    localStorage.setItem('darkMode', $('body').hasClass('dark-mode') ? 'enabled' : 'disabled');
+  
+    // Get the current stroke color based on the mode
+    const strokeColor = $('body').hasClass('dark-mode') ? '#ffffff' : '#000000';
+  
+    // Update the stroke color of all existing paths
+    drawnPaths.forEach(function(p) {
+      p.stroke({ color: strokeColor });
+    });
+  }
+
+  // Signature Pad Drawing Logic (adjust stroke color based on mode)
+  $('#signature-pad').on('mousedown touchstart', function(event) {
+    drawing = true;
+    var pos = getMousePosition(event);
+
+    // Adjust the stroke color based on dark mode
+    var strokeColor = getCurrentStrokeColor();
+    path = draw.path().fill('none').stroke({ width: 2, color: strokeColor });
+    path.plot(`M ${pos.x} ${pos.y}`);
+    
+    // Add the path to the drawnPaths array
+    drawnPaths.push(path);
+  });
+
+  // Check system preferences for dark mode
+  function detectSystemDarkMode() {
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const userPreference = localStorage.getItem('darkMode');
+
+    if (userPreference === 'enabled' || (prefersDarkScheme && !userPreference)) {
+      $('body').addClass('dark-mode');
+    } else {
+      $('body').removeClass('dark-mode');
+    }
+  }
+
+  // Bind the dark mode toggle button
+  $('#toggle-dark-mode').click(function() {
+    toggleDarkMode();
   });
 });
