@@ -1,3 +1,5 @@
+import { generatePDF } from './pdfGenerator.js';  // Import the generatePDF function
+
 $(document).ready(function() {
   const formLabels = {
     en: {
@@ -12,33 +14,39 @@ $(document).ready(function() {
     }
   };
 
-  let userData = {};
-  let signatureDataUrl = ''; // Variable to store the signature image
+  let userData = {
+    NAME: '',
+    COMPANY_NAME: '',
+    COMPANY_ADDRESS: '',
+    CUSTOMER_SIGNATURE_PATH: ''
+  };
 
-  // Function to load templates and replace placeholders with user data, global JSON, and language-specific JSON content
+  let signatureDataUrl = '';  // Variable to store the signature image
+
+  // Fill template function
   function fillTemplate(template, jsonData, globalData, userData) {
     let filledTemplate = template;
-    const allData = { ...globalData, ...jsonData, ...userData }; // Merge all data sources
-  
+    const allData = { ...globalData, ...jsonData, ...userData };
+    
     // Add current date to the allData object
     const currentDate = new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
     allData['CURRENT_DATE'] = currentDate;
-  
+
     // Preserve the CUSTOMER_SIGNATURE_PATH if it exists
     if (userData.CUSTOMER_SIGNATURE_PATH) {
       allData['CUSTOMER_SIGNATURE_PATH'] = userData.CUSTOMER_SIGNATURE_PATH;
     }
-  
+
     // Replace placeholders
     Object.keys(allData).forEach(function(key) {
       const placeholder = `{{${key}}}`;
       filledTemplate = filledTemplate.replaceAll(new RegExp(placeholder, 'g'), allData[key] || '');
     });
-  
+    
     return filledTemplate;
   }
 
@@ -54,12 +62,12 @@ $(document).ready(function() {
             $.get('/templates/data_protection_letter_template.html', function(dataProtectionTemplate) {
               // Preserve the customer signature path during reload
               const previousSignature = userData.CUSTOMER_SIGNATURE_PATH || '';
-  
+
               // Fill each document template
               const filledProposal = fillTemplate(proposalTemplate, jsonData.documents[0].content, globalData, userData);
               const filledNDA = fillTemplate(ndaTemplate, jsonData.documents[1].content, globalData, userData);
               const filledDataProtection = fillTemplate(dataProtectionTemplate, jsonData.documents[2].content, globalData, userData);
-  
+
               // Insert the filled documents into the preview, including the signature
               const combinedContent = `
                 <div class="document">
@@ -73,15 +81,14 @@ $(document).ready(function() {
                 </div>
               `;
               $('#document .content').html(combinedContent);
-  
+
               // Insert the global variables (e.g., logo) into the preview
               $('#document .header img').attr('src', globalData.YOUR_COMPANY_LOGO_URL);
               $('#document .company-name').text(globalData.YOUR_COMPANY_NAME);
               $('#document .footer').html(`
                 <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
-                <p>Page <span class="page-number"></span></p>
               `);
-  
+
               // Modal preview logic
               $('#preview-document').click(function() {
                 const filledPreviewContent = `
@@ -103,18 +110,19 @@ $(document).ready(function() {
                       <!--<p>Owner's Signature:</p>
                       <img src="${globalData.YOUR_SIGNATURE_PATH}" alt="Owner Signature" width="300px" height="150px" />
                       <p>Customer's Signature:</p>
-                      <img id="customer-signature-preview" src="${previousSignature}" alt="Customer Signature" width="300px" height="150px" /> -->
+                      <img id="customer-signature-preview" src="${previousSignature}" alt="Customer Signature" width="300px" height="150px" />-->
                     </div>
                     <div class="footer">
                       <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
-                      <!--<p>Page <span class="page-number"></span></p>-->
                     </div>
                   </div>
                 `;
+                
+                // Inject content into modal
                 $('#preview-content').html(filledPreviewContent);
                 $('#previewModal').modal('show');
               });
-  
+
               // Handle PDF generation
               $('#accept-document').click(function() {
                 generatePDF(filledProposal, filledNDA, filledDataProtection, signatureDataUrl);
@@ -126,54 +134,21 @@ $(document).ready(function() {
     });
   }
 
-  function generatePDF(proposal, nda, dataProtection, signature) {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      format: 'a4', // Set the PDF size to A4
-      unit: 'mm',
-    });
-  
-    html2canvas(document.querySelector('#document'), {
-      scale: 2,
-      useCORS: true,
-      logging: true,
-      windowWidth: document.body.scrollWidth
-    }).then(function(canvas) {
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = 210;
-      const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-  
-      // Add the image to the PDF, split into pages if needed
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-  
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-  
-      // Save the final PDF
-      pdf.save('Documents.pdf');
-    });
-  }
+  // Trigger loading content even if the user hasn't typed anything yet
+  loadContentAndTemplates('en', userData);
 
-  // Update form labels and load content based on language change
+  // Language switch handling
   $('#language-select').change(function() {
     const selectedLang = $(this).val();
-
-    // Update form labels
+    
+    // Update form labels based on language selection
     $('#name-label').text(formLabels[selectedLang].name + ":");
     $('#company-label').text(formLabels[selectedLang].company + ":");
     $('#email-label').text(formLabels[selectedLang].email + ":");
 
-    // Load and fill templates with the appropriate content
+    // Reload the templates with the selected language
     loadContentAndTemplates(selectedLang, userData);
-  }).trigger('change'); // Trigger the change event on page load to set default language and load content
+  });
 
   // Handle form input updates and update the preview dynamically
   $('#form input').on('input', function() {
@@ -236,10 +211,8 @@ $(document).ready(function() {
   
       // Store the customer signature in userData for placeholder replacement
       userData['CUSTOMER_SIGNATURE_PATH'] = customerSignatureDataUrl;
-      //debug
       console.log('Customer signature data URL:', customerSignatureDataUrl);
 
-  
       // Update the preview with the customer signature immediately
       $('#customer-signature-preview').attr('src', customerSignatureDataUrl);
       
@@ -251,6 +224,7 @@ $(document).ready(function() {
     img.src = url;
   });
 
+  // Mouse position helper
   function getMousePosition(event) {
     var rect = document.getElementById('signature-pad').getBoundingClientRect();
     var clientX = event.clientX || event.originalEvent.touches[0].clientX;
