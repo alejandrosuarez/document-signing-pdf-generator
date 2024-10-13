@@ -1,0 +1,70 @@
+{
+  "documents": [
+    {
+      "title": "Proposal: TrintAI Call Center Collaboration",
+      "content": {
+        "PROPOSAL_TITLE": "Proposal: TrintAI Call Center Collaboration for Speech-to-Text, Summarization, and Sentiment Analysis",
+        "DEAR_LABEL": "Dear",
+        "INTRODUCTION_PARAGRAPH": "We are excited to introduce TrintAI, an advanced open-source tool that transforms speech into text and offers additional capabilities such as sentiment analysis, summarization, and language identification. Our mission is to help companies like yours gain valuable insights from audio recordings in minutes.",
+        "KEY_FEATURES_LABEL": "Key Features of TrintAI:",
+        "KEY_FEATURES_LIST": "<li>Speech-to-Text Transcription: Convert audio files into accurate, readable text in real-time.</li><li>Summarization: Provides concise summaries of long audio files or transcripts, highlighting key information and takeaways.</li><li>Sentiment Analysis: Detects emotions within the transcribed text.</li><li>Language Identification: Identifies the language spoken and supports multiple languages for transcription.</li><li>Diarization: Differentiates between speakers in audio recordings.</li>",
+        "COLLABORATION_PARAGRAPH": "We are currently seeking call center companies to collaborate in testing our technology, and we would like to invite your company to participate. By joining this collaboration, you will have the opportunity to test TrintAI free of charge in exchange for providing us with a set of voice recordings from your company.",
+        "BENEFITS_LABEL": "Benefits to Your Company:",
+        "BENEFITS_LIST": "<li>Access to cutting-edge speech recognition technology at no cost.</li><li>Quick and accurate transcriptions that can improve your call center's productivity.</li><li>Advanced analytics tools to understand customer sentiment and behavior.</li><li>Custom solutions tailored to your specific business needs.</li>",
+        "CLOSING_PARAGRAPH": "We are flexible in the number of recordings and can work together to establish a suitable testing framework that meets your needs. Please let us know if your team is interested in participating in this exciting project. We are happy to provide all the necessary technology for the trial, and your feedback will be invaluable in helping us perfect TrintAI for the broader market.",
+        "REGARDS_LABEL": "Best regards",
+        "DATE_LABEL": "Date"
+      }
+    },
+    {
+      "title": "Non-Disclosure Agreement",
+      "content": {
+        "NDA_TITLE": "Non-Disclosure Agreement (NDA)",
+        "NDA_DATE_LABEL": "This Non-Disclosure Agreement (\"Agreement\") is entered into on",
+        "BETWEEN_LABEL": "Between",
+        "DISCLOSING_PARTY_LABEL": "Hereinafter referred to as \"Disclosing Party\"",
+        "AND_LABEL": "And",
+        "RECEIVING_PARTY_LABEL": "Hereinafter referred to as \"Receiving Party\"",
+        "PURPOSE_LABEL": "Purpose",
+        "PURPOSE_CONTENT": "The Disclosing Party intends to share certain confidential and proprietary information with the Receiving Party for the purpose of testing TrintAI, a speech-to-text, summarization, and sentiment analysis tool. This information, including but not limited to test results, technology usage, and performance data, is confidential and should not be shared outside the company.",
+        "CONFIDENTIAL_INFO_LABEL": "Confidential Information",
+        "CONFIDENTIAL_INFO_CONTENT": "For the purposes of this Agreement, \"Confidential Information\" means all information disclosed by the Disclosing Party to the Receiving Party during the course of the project that is not generally known to the public, including but not limited to: project results and performance metrics, technical documentation and system architecture, test data and any recordings provided by the Receiving Party.",
+        "OBLIGATIONS_LABEL": "Obligations of the Receiving Party",
+        "OBLIGATIONS_CONTENT": "The Receiving Party agrees to: Keep all Confidential Information strictly confidential. Not disclose any Confidential Information to third parties without the prior written consent of the Disclosing Party. Use the Confidential Information solely for the purpose of testing TrintAI.",
+        "DURATION_LABEL": "Duration",
+        "DURATION_CONTENT": "This Agreement shall remain in effect for two (2) years from the date of signing.",
+        "EXCLUSIONS_LABEL": "Exclusions",
+        "EXCLUSIONS_CONTENT": "Confidential Information does not include information that: Was in the public domain at the time of disclosure. Becomes public without breach of this Agreement. Is disclosed with the prior written approval of the Disclosing Party.",
+        "MISCELLANEOUS_LABEL": "Miscellaneous",
+        "MISCELLANEOUS_CONTENT": "This Agreement constitutes the entire understanding between the parties and can only be modified in writing, signed by both parties.",
+        "SIGNATURE_LABEL": "Signature",
+        "NAME_LABEL": "Name",
+        "DATE_LABEL": "Date"
+      }
+    },
+    {
+      "title": "Customer Data Protection Letter",
+      "content": {
+        "DATA_PROTECTION_TITLE": "Customer Data Protection Letter",
+        "TO_LABEL": "To",
+        "SUBJECT_LABEL": "Subject",
+        "DATA_PROTECTION_SUBJECT": "Customer Data Protection Commitment for TrintAI Testing",
+        "DEAR_LABEL": "Dear",
+        "INTRODUCTION_PARAGRAPH": "This letter serves to confirm [YOUR_COMPANY]'s commitment to the protection and responsible use of the resources provided by your company during the testing phase of TrintAI.",
+        "DATA_USE_LABEL": "Use of Data",
+        "DATA_USE_CONTENT": "All voice recordings and any other data provided by your company will be used exclusively for the purpose of testing TrintAI's functionality, including speech-to-text transcription, summarization, sentiment analysis, and related features.",
+        "CONFIDENTIALITY_LABEL": "Confidentiality",
+        "CONFIDENTIALITY_CONTENT": "We commit that no data, recordings, or results from the tests will be shared with third parties or outside individuals without your prior written consent.",
+        "DATA_SECURITY_LABEL": "Data Security",
+        "DATA_SECURITY_CONTENT": "The data provided by your company will be handled in accordance with the highest security standards, ensuring that only authorized personnel have access to it. We have implemented stringent measures to safeguard your data throughout the entire testing process.",
+        "OPEN_SOURCE_LABEL": "Open Source Assurance",
+        "OPEN_SOURCE_CONTENT": "Although TrintAI is an open-source project, the data used in testing will not be open or publicly shared. We respect your privacy and will treat all shared data as strictly confidential.",
+        "DURATION_LABEL": "Duration",
+        "DURATION_CONTENT": "This commitment remains valid for the entire duration of the testing phase and for any subsequent discussions or developments involving your company's data.",
+        "CLOSING_PARAGRAPH": "If you have any additional questions or concerns regarding data protection, please do not hesitate to contact us.",
+        "SINCERELY_LABEL": "Sincerely",
+        "DATE_LABEL": "Date"
+      }
+    }
+  ]
+}

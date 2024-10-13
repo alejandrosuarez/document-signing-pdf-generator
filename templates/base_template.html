@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{DOCUMENT_TITLE}}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+        }
+        .header img {
+            max-width: 200px;
+            height: auto;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .content {
+            padding: 40px;
+            min-height: calc(100vh - 200px);
+        }
+        .footer {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 12px;
+            border-top: 2px solid #ddd;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .page-number:after {
+            content: counter(page);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{COMPANY_LOGO_URL}}" alt="{{YOUR_COMPANY_NAME}} Logo">
+        <div class="company-name">{{YOUR_COMPANY_NAME}}</div>
+    </div>
+
+    <div class="content">
+        {{DOCUMENT_CONTENT}}
+    </div>
+
+    <div class="footer">
+        <p>{{YOUR_COMPANY_NAME}} - {{COMPANY_ADDRESS}} - {{COMPANY_PHONE}} - {{COMPANY_EMAIL}}</p>
+        <p>Page <span class="page-number"></span></p>
+    </div>
+</body>
+</html>

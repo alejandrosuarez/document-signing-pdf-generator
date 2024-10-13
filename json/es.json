@@ -1,0 +1,70 @@
+{
+  "documents": [
+    {
+      "title": "Propuesta: Colaboración con TrintAI para Centros de Llamadas",
+      "content": {
+        "PROPOSAL_TITLE": "Propuesta: Colaboración con TrintAI para Centros de Llamadas en Transcripción de Voz, Resumen y Análisis de Sentimientos",
+        "DEAR_LABEL": "Estimado/a",
+        "INTRODUCTION_PARAGRAPH": "Nos complace presentar TrintAI, una herramienta avanzada de código abierto que transforma el habla en texto y ofrece capacidades adicionales como análisis de sentimientos, resumen e identificación de idiomas. Nuestra misión es ayudar a empresas como la suya a obtener valiosos insights de grabaciones de audio en cuestión de minutos.",
+        "KEY_FEATURES_LABEL": "Características Clave de TrintAI:",
+        "KEY_FEATURES_LIST": "<li>Transcripción de Voz a Texto: Convierte archivos de audio en texto preciso y legible en tiempo real.</li><li>Resumen: Proporciona resúmenes concisos de archivos de audio largos o transcripciones, destacando la información clave y los puntos más importantes.</li><li>Análisis de Sentimientos: Detecta emociones dentro del texto transcrito.</li><li>Identificación de Idiomas: Identifica el idioma hablado y admite la transcripción en varios idiomas.</li><li>Diarización: Diferencia entre los distintos interlocutores en las grabaciones de audio.</li>",
+        "COLLABORATION_PARAGRAPH": "Estamos buscando empresas de centros de llamadas para colaborar en la prueba de nuestra tecnología, y nos gustaría invitar a su empresa a participar. Al unirse a esta colaboración, tendrá la oportunidad de probar TrintAI de manera gratuita, a cambio de proporcionarnos un conjunto de grabaciones de voz de su empresa.",
+        "BENEFITS_LABEL": "Beneficios para su Empresa:",
+        "BENEFITS_LIST": "<li>Acceso a tecnología de reconocimiento de voz de vanguardia sin costo alguno.</li><li>Transcripciones rápidas y precisas que pueden mejorar la productividad de su centro de llamadas.</li><li>Herramientas avanzadas de análisis para comprender el sentimiento y comportamiento de los clientes.</li><li>Soluciones personalizadas adaptadas a las necesidades específicas de su negocio.</li>",
+        "CLOSING_PARAGRAPH": "Somos flexibles con la cantidad de grabaciones y podemos trabajar juntos para establecer un marco de prueba adecuado que satisfaga sus necesidades. Por favor, háganos saber si su equipo está interesado en participar en este emocionante proyecto. Estamos encantados de proporcionar toda la tecnología necesaria para la prueba, y su retroalimentación será invaluable para ayudarnos a perfeccionar TrintAI para el mercado general.",
+        "REGARDS_LABEL": "Atentamente",
+        "DATE_LABEL": "Fecha"
+      }
+    },
+    {
+      "title": "Acuerdo de Confidencialidad",
+      "content": {
+        "NDA_TITLE": "Acuerdo de Confidencialidad (NDA)",
+        "NDA_DATE_LABEL": "Este Acuerdo de Confidencialidad (\"Acuerdo\") se celebra el",
+        "BETWEEN_LABEL": "Entre",
+        "DISCLOSING_PARTY_LABEL": "En adelante referido como \"Parte Reveladora\"",
+        "AND_LABEL": "Y",
+        "RECEIVING_PARTY_LABEL": "En adelante referido como \"Parte Receptora\"",
+        "PURPOSE_LABEL": "Propósito",
+        "PURPOSE_CONTENT": "La Parte Reveladora tiene la intención de compartir cierta información confidencial y de propiedad exclusiva con la Parte Receptora para el propósito de probar TrintAI, una herramienta de transcripción de voz a texto, resumen y análisis de sentimientos. Esta información, incluidos, entre otros, los resultados de las pruebas, el uso de la tecnología y los datos de rendimiento, es confidencial y no deberá compartirse fuera de la empresa.",
+        "CONFIDENTIAL_INFO_LABEL": "Información Confidencial",
+        "CONFIDENTIAL_INFO_CONTENT": "Para los fines de este Acuerdo, \"Información Confidencial\" significa toda la información divulgada por la Parte Reveladora a la Parte Receptora durante el curso del proyecto que no sea generalmente conocida por el público, incluidos, entre otros: resultados del proyecto y métricas de rendimiento, documentación técnica y arquitectura del sistema, datos de prueba y cualquier grabación proporcionada por la Parte Receptora.",
+        "OBLIGATIONS_LABEL": "Obligaciones de la Parte Receptora",
+        "OBLIGATIONS_CONTENT": "La Parte Receptora se compromete a: Mantener toda la Información Confidencial estrictamente confidencial. No divulgar ninguna Información Confidencial a terceros sin el consentimiento previo por escrito de la Parte Reveladora. Utilizar la Información Confidencial únicamente para el propósito de probar TrintAI.",
+        "DURATION_LABEL": "Duración",
+        "DURATION_CONTENT": "Este Acuerdo permanecerá en vigor durante dos (2) años a partir de la fecha de la firma.",
+        "EXCLUSIONS_LABEL": "Exclusiones",
+        "EXCLUSIONS_CONTENT": "La Información Confidencial no incluye información que: Era de conocimiento público en el momento de la divulgación. Se hace pública sin incumplimiento de este Acuerdo. Se divulga con la aprobación previa por escrito de la Parte Reveladora.",
+        "MISCELLANEOUS_LABEL": "Misceláneos",
+        "MISCELLANEOUS_CONTENT": "Este Acuerdo constituye el entendimiento completo entre las partes y solo puede ser modificado por escrito, firmado por ambas partes.",
+        "SIGNATURE_LABEL": "Firma",
+        "NAME_LABEL": "Nombre",
+        "DATE_LABEL": "Fecha"
+      }
+    },
+    {
+      "title": "Carta de Protección de Datos del Cliente",
+      "content": {
+        "DATA_PROTECTION_TITLE": "Carta de Protección de Datos del Cliente",
+        "TO_LABEL": "Para",
+        "SUBJECT_LABEL": "Asunto",
+        "DATA_PROTECTION_SUBJECT": "Compromiso de Protección de Datos del Cliente para la Prueba de TrintAI",
+        "DEAR_LABEL": "Estimado/a",
+        "INTRODUCTION_PARAGRAPH": "Esta carta tiene como propósito confirmar el compromiso de [YOUR_COMPANY] con la protección y el uso responsable de los recursos proporcionados por su empresa durante la fase de prueba de TrintAI.",
+        "DATA_USE_LABEL": "Uso de los Datos",
+        "DATA_USE_CONTENT": "Todas las grabaciones de voz y cualquier otro dato proporcionado por su empresa serán utilizados exclusivamente con el propósito de probar la funcionalidad de TrintAI, incluyendo la transcripción de voz a texto, resumen, análisis de sentimientos y características relacionadas.",
+        "CONFIDENTIALITY_LABEL": "Confidencialidad",
+        "CONFIDENTIALITY_CONTENT": "Nos comprometemos a no compartir ningún dato, grabación o resultado de las pruebas con terceros o personas externas sin su consentimiento previo por escrito.",
+        "DATA_SECURITY_LABEL": "Seguridad de los Datos",
+        "DATA_SECURITY_CONTENT": "Los datos proporcionados por su empresa serán gestionados de acuerdo con los más altos estándares de seguridad, garantizando que solo el personal autorizado tenga acceso a ellos. Hemos implementado medidas rigurosas para proteger sus datos durante todo el proceso de prueba.",
+        "OPEN_SOURCE_LABEL": "Garantía de Código Abierto",
+        "OPEN_SOURCE_CONTENT": "Aunque TrintAI es un proyecto de código abierto, los datos utilizados en las pruebas no serán públicos ni compartidos. Respetamos su privacidad y trataremos todos los datos compartidos como estrictamente confidenciales.",
+        "DURATION_LABEL": "Duración",
+        "DURATION_CONTENT": "Este compromiso será válido durante toda la fase de prueba y para cualquier discusión o desarrollo posterior que implique el uso de los datos de su empresa.",
+        "CLOSING_PARAGRAPH": "Si tiene alguna pregunta o inquietud adicional con respecto a la protección de los datos, no dude en ponerse en contacto con nosotros.",
+        "SINCERELY_LABEL": "Atentamente",
+        "DATE_LABEL": "Fecha"
+      }
+    }
+  ]
+}

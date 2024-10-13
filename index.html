@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document Signature</title>
@@ -12,6 +15,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- SVG.js (for drawing SVG signatures) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.16/svg.min.js"></script>
+  <!-- dompurify (to fix the error) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js"></script>
+  <!-- html2canvas (to fix the error) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
 
   <style>
     body {
@@ -39,7 +48,7 @@
   <div class="container mt-5">
     <h2 class="text-center">Document Signature</h2>
 
-    <!-- Language Selection -->
+    <!-- Language and Document Selection -->
     <div class="row justify-content-center">
       <div class="col-md-6">
         <label for="language-select">Choose Language / Elija idioma:</label>
@@ -53,25 +62,38 @@
     <!-- Document Display Area -->
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <h5 class="text-center mt-4">Document</h5>
-        <div id="document" class="document-area"></div>
+        <h5 class="text-center mt-4">Document Preview</h5>
+        <!-- The document area will only show the content -->
+        <div id="document" class="document-area">
+          <div class="header">
+            <img src="{{YOUR_COMPANY_LOGO_URL}}" alt="{{YOUR_COMPANY_NAME}} Logo">
+            <div class="company-name">{{YOUR_COMPANY_NAME}}</div>
+          </div>
+          <div class="content">
+            {{DOCUMENT_CONTENT}}  <!-- This will be replaced with the document content dynamically -->
+          </div>
+          <div class="footer">
+            <p>{{YOUR_COMPANY_NAME}} - {{YOUR_COMPANY_ADDRESS}} - {{YOUR_COMPANY_PHONE}} - {{YOUR_COMPANY_EMAIL}}</p>
+            <!--<p>Page <span class="page-number"></span></p>-->
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- User Form -->
+    <!-- User Form (for Customer Data) -->
     <div class="row justify-content-center">
       <div class="col-md-6">
         <form id="form">
           <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name" id="name-label">Customer Name:</label>
             <input type="text" class="form-control" id="name" required>
           </div>
           <div class="form-group">
-            <label for="company">Company:</label>
+            <label for="company" id="company-label">Customer Company:</label>
             <input type="text" class="form-control" id="company" required>
           </div>
           <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email" id="email-label">Customer Email:</label>
             <input type="email" class="form-control" id="email" required>
           </div>
 
@@ -79,195 +101,38 @@
           <div id="signature-pad" class="signature-pad"></div>
           <button type="button" id="clear-signature" class="btn btn-secondary">Clear Signature</button>
 
-          <button type="button" id="accept-document" class="btn btn-primary mt-4">Accept and Sign</button>
+          <!-- Preview and Generate Buttons -->
+          <div class="row justify-content-center mt-4">
+            <button type="button" id="preview-document" class="btn btn-info">Preview Document</button>
+            <button type="button" id="accept-document" class="btn btn-primary">Generate PDF</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <script>
-    $(document).ready(function() {
-      // Documents in English and Spanish
-      const documents = {
-        en: {
-          proposal: `Proposal: TrintAI Call Center Collaboration for Speech-to-Text, Summarization, and Sentiment Analysis
-          
-          Dear [COMPANY],
-          
-          We are excited to introduce TrintAI, an advanced open-source tool that transforms speech into text and offers additional capabilities such as sentiment analysis, summarization, and language identification. Our mission is to help companies like yours gain valuable insights from audio recordings in minutes.`,
-          nda: `Non-Disclosure Agreement (NDA)
+  <!-- Preview Modal -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previewModalLabel">Document Preview</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="preview-content">
+          <!-- Preview content will go here -->
+        </div>
+      </div>
+    </div>
+  </div>
 
-          This Non-Disclosure Agreement ("Agreement") is entered into as of [DATE] by and between:
+  <!-- jQuery (make sure it's before app.js) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-          [YOUR_COMPANY]
-          Address: [YOUR_ADDRESS]
-
-          AND
-
-          [COMPANY]
-          Address: [COMPANY_ADDRESS]
-
-          Confidential information disclosed...`,
-          dataProtection: `Customer Data Protection Letter
-
-          [YOUR_COMPANY]
-          Address: [YOUR_ADDRESS]
-
-          To:
-          [COMPANY]
-          Address: [COMPANY_ADDRESS]
-
-          This letter serves to confirm [YOUR_COMPANY]'s commitment...`
-        },
-        es: {
-          proposal: `Propuesta: Colaboración con TrintAI para Transcripción de Voz, Resumen y Análisis de Sentimientos
-
-          Estimado/a [COMPANY],
-
-          Nos complace presentar TrintAI, una herramienta avanzada de código abierto que transforma el habla en texto y ofrece capacidades adicionales como análisis de sentimientos, resumen e identificación de idiomas.`,
-          nda: `Acuerdo de Confidencialidad (NDA)
-
-          Este Acuerdo de Confidencialidad ("Acuerdo") se celebra el [DATE] entre:
-
-          [YOUR_COMPANY]
-          Dirección: [YOUR_ADDRESS]
-
-          Y
-
-          [COMPANY]
-          Dirección: [COMPANY_ADDRESS]
-
-          Información confidencial revelada...`,
-          dataProtection: `Carta de Protección de Datos del Cliente
-
-          [YOUR_COMPANY]
-          Dirección: [YOUR_ADDRESS]
-
-          Para:
-          [COMPANY]
-          Dirección: [COMPANY_ADDRESS]
-
-          Esta carta confirma el compromiso de [YOUR_COMPANY]...`
-        }
-      };
-
-      // Initialize SVG canvas for signature
-      var draw = SVG().addTo('#signature-pad').size(300, 150);
-      var path;
-      var drawing = false;
-
-      // Handle language change and display document
-      $('#language-select').change(function() {
-        const selectedLang = $(this).val();
-        $('#document').text(documents[selectedLang].proposal);
-      }).trigger('change'); // Trigger the change event on page load
-
-      // Mouse down to start drawing
-      $('#signature-pad').on('mousedown touchstart', function(event) {
-        drawing = true;
-        var pos = getMousePosition(event);
-        path = draw.path().fill('none').stroke({ width: 2, color: '#000' });
-        path.plot(`M ${pos.x} ${pos.y}`);
-      });
-
-      // Mouse move to continue drawing
-      $('#signature-pad').on('mousemove touchmove', function(event) {
-        if (drawing) {
-          var pos = getMousePosition(event);
-          var plot = path.array().toString();
-          plot += ` L ${pos.x} ${pos.y}`;
-          path.plot(plot);
-        }
-      });
-
-      // Mouse up to stop drawing
-      $('#signature-pad').on('mouseup touchend mouseleave', function() {
-        drawing = false;
-      });
-
-      function getMousePosition(event) {
-        var rect = document.getElementById('signature-pad').getBoundingClientRect();
-        var clientX = event.clientX || event.originalEvent.touches[0].clientX;
-        var clientY = event.clientY || event.originalEvent.touches[0].clientY;
-        return {
-          x: clientX - rect.left,
-          y: clientY - rect.top
-        };
-      }
-
-      // Clear Signature
-      $('#clear-signature').click(function() {
-        draw.clear();
-      });
-
-      // Generate PDF with user data and signature for both documents
-      function generateCombinedPDF(userData, signature, doc1Content, doc2Content) {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-
-        // Page 1: NDA
-        pdf.setFontSize(16);
-        pdf.text('Non-Disclosure Agreement (NDA)', 20, 20);
-        pdf.setFontSize(12);
-        pdf.text(`Name: ${userData.name}`, 20, 30);
-        pdf.text(`Company: ${userData.company}`, 20, 40);
-        pdf.text(`Email: ${userData.email}`, 20, 50);
-        pdf.text(doc1Content, 20, 60);
-        pdf.addImage(signature, 'PNG', 20, 120, 150, 75);
-
-        // Page 2: Data Protection Letter
-        pdf.addPage();
-        pdf.setFontSize(16);
-        pdf.text('Customer Data Protection Letter', 20, 20);
-        pdf.setFontSize(12);
-        pdf.text(`Name: ${userData.name}`, 20, 30);
-        pdf.text(`Company: ${userData.company}`, 20, 40);
-        pdf.text(`Email: ${userData.email}`, 20, 50);
-        pdf.text(doc2Content, 20, 60);
-        pdf.addImage(signature, 'PNG', 20, 120, 150, 75);
-
-        // Save the PDF
-        pdf.save('Combined_Documents.pdf');
-      }
-
-      // User accepts the document
-      $('#accept-document').click(function() {
-        const name = $('#name').val();
-        const company = $('#company').val();
-        const email = $('#email').val();
-        const selectedLang = $('#language-select').val();
-
-        if (name && company && email) {
-          const userData = { name, company, email };
-          const doc1Content = documents[selectedLang].nda;
-          const doc2Content = documents[selectedLang].dataProtection;
-
-          // Convert signature to image
-          const svgString = $('#signature-pad').html();
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-          const url = URL.createObjectURL(svgBlob);
-          const img = new Image();
-
-          img.onload = function() {
-            canvas.width = 300;
-            canvas.height = 150;
-            ctx.drawImage(img, 0, 0);
-
-            const signature = canvas.toDataURL('image/png');
-
-            // Generate one PDF for both documents
-            generateCombinedPDF(userData, signature, doc1Content, doc2Content);
-          };
-
-          img.src = url;
-        } else {
-          alert('Please fill in all fields.');
-        }
-      });
-    });
-  </script>
+  <!-- External JavaScript -->
+  <script src="src/app.js"></script>
 
   <!-- Bootstrap JS and Popper.js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
