@@ -9,12 +9,14 @@ $(document).ready(function() {
     en: {
       name: "Customer Name",
       company: "Customer Company",
-      email: "Customer Email"
+      email: "Customer Email",
+      agree: "I Agree"
     },
     es: {
       name: "Nombre del Cliente",
       company: "Empresa del Cliente",
-      email: "Correo del Cliente"
+      email: "Correo del Cliente",
+      agree: "Estoy de acuerdo"
     }
   };
 
@@ -89,10 +91,10 @@ $(document).ready(function() {
                     <div class="company-name">${globalData.YOUR_COMPANY_NAME}</div>
                   </div>
                   <div class="content">
-                    <div class="document">
+                    <div class="document" style="page-break-after: always;">
                       ${filledProposal}
                     </div>
-                    <div class="document">
+                    <div class="document" style="page-break-after: always;">
                       ${filledNDA}
                     </div>
                     <div class="document">
@@ -111,10 +113,10 @@ $(document).ready(function() {
                 
               // Insert the filled documents into the preview, including the signature
               const combinedContent = `
-                <div class="document">
+                <div class="document" style="page-break-after: always;">
                   ${filledProposal}
                 </div>
-                <div class="document">
+                <div class="document" style="page-break-after: always;">
                   ${filledNDA}
                 </div>
                 <div class="document">
@@ -163,6 +165,7 @@ $(document).ready(function() {
     $('#name-label').text(formLabels[selectedLang].name + ":");
     $('#company-label').text(formLabels[selectedLang].company + ":");
     $('#email-label').text(formLabels[selectedLang].email + ":");
+    $('#print-modal-content').text(formLabels[selectedLang].agree);
 
     // Reload the templates with the selected language
     loadContentAndTemplates(selectedLang, userData);
@@ -315,5 +318,61 @@ $(document).ready(function() {
   // Bind the dark mode toggle button
   $('#toggle-dark-mode').click(function() {
     toggleDarkMode();
+  });
+
+  $('#print-modal-content').click(function() {
+    // Select the content inside the modal that you want to print
+    const printContent = document.getElementById('preview-content').innerHTML;
+    
+    // Create a new window or tab for printing
+    const newWindow = window.open('', '_blank', 'width=800,height=600');
+    
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Document</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 10px;
+            }
+            .header img {
+              width: 100px;
+            }
+            * {
+              box-sizing: border-box;
+              font-family: "VT323", monospace;
+              color: #1f1f1f;
+            }
+            h1 {
+              font-size: 20px;
+            }
+            h2 {
+              font-size: 16px;
+            }
+            p {
+              font-size: 12px;
+            }
+            ul {
+              padding-left: 20px;
+            }
+            li {
+              font-size: 12px;
+            }
+          </style>
+        </head>
+        <body>
+          ${printContent}  <!-- Inject the modal content here -->
+          <script>
+            window.onload = function() {
+              window.print();  // Automatically trigger the print dialog
+              window.onafterprint = window.close;  // Close the window after printing
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    
+    newWindow.document.close();  // Close the document to finish writing
   });
 });
