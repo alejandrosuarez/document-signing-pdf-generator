@@ -75,12 +75,40 @@ $(document).ready(function() {
             $.get('/templates/data_protection_letter_template.html', function(dataProtectionTemplate) {
               // Preserve the customer signature path during reload
               const previousSignature = userData.CUSTOMER_SIGNATURE_PATH || '';
-
+  
               // Fill each document template
               const filledProposal = fillTemplate(proposalTemplate, jsonData.documents[0].content, globalData, userData);
               const filledNDA = fillTemplate(ndaTemplate, jsonData.documents[1].content, globalData, userData);
               const filledDataProtection = fillTemplate(dataProtectionTemplate, jsonData.documents[2].content, globalData, userData);              
-              
+                
+              // Create filledPreviewContent for both preview and PDF generation
+              const filledPreviewContent = `
+                <div class="container">
+                  <div class="header">
+                    <img src="${globalData.YOUR_COMPANY_LOGO_URL}" alt="${globalData.YOUR_COMPANY_NAME} Logo">
+                    <div class="company-name">${globalData.YOUR_COMPANY_NAME}</div>
+                  </div>
+                  <div class="content">
+                    <div class="document">
+                      ${filledProposal}
+                    </div>
+                    <div class="document">
+                      ${filledNDA}
+                    </div>
+                    <div class="document">
+                      ${filledDataProtection}
+                    </div>
+                    <!--<p>Owner's Signature:</p>
+                    <img src="${globalData.YOUR_SIGNATURE_PATH}" alt="Owner Signature" width="300px" height="150px" />
+                    <p>Customer's Signature:</p>
+                    <img id="customer-signature-preview" src="${previousSignature}" alt="Customer Signature" width="300px" height="150px" />-->
+                  </div>
+                  <div class="footer">
+                    <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
+                  </div>
+                </div>
+              `;
+                
               // Insert the filled documents into the preview, including the signature
               const combinedContent = `
                 <div class="document">
@@ -94,51 +122,28 @@ $(document).ready(function() {
                 </div>
               `;
               $('#document .content').html(combinedContent);
-
+  
               // Insert the global variables (e.g., logo) into the preview
               $('#document .header img').attr('src', globalData.YOUR_COMPANY_LOGO_URL);
               $('#document .company-name').text(globalData.YOUR_COMPANY_NAME);
               $('#document .footer').html(`
                 <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
               `);
+  
               // After everything is loaded and inserted:
               hideLoadingOverlay();  // Hide loading overlay when done
+  
               // Modal preview logic
               $('#preview-document').click(function() {
-                const filledPreviewContent = `
-                  <div class="container">
-                    <div class="header">
-                      <img src="${globalData.YOUR_COMPANY_LOGO_URL}" alt="${globalData.YOUR_COMPANY_NAME} Logo">
-                      <div class="company-name">${globalData.YOUR_COMPANY_NAME}</div>
-                    </div>
-                    <div class="content">
-                      <div class="document">
-                        ${filledProposal}
-                      </div>
-                      <div class="document">
-                        ${filledNDA}
-                      </div>
-                      <div class="document">
-                        ${filledDataProtection}
-                      </div>
-                      <!--<p>Owner's Signature:</p>
-                      <img src="${globalData.YOUR_SIGNATURE_PATH}" alt="Owner Signature" width="300px" height="150px" />
-                      <p>Customer's Signature:</p>
-                      <img id="customer-signature-preview" src="${previousSignature}" alt="Customer Signature" width="300px" height="150px" />-->
-                    </div>
-                    <div class="footer">
-                      <p>${globalData.YOUR_COMPANY_NAME} - ${globalData.YOUR_COMPANY_ADDRESS} - ${globalData.YOUR_COMPANY_PHONE} - ${globalData.YOUR_COMPANY_EMAIL}</p>
-                    </div>
-                  </div>
-                `;
                 // Inject content into modal
                 $('#preview-content').html(filledPreviewContent);
                 $('#previewModal').modal('show');
               });
-              
+  
               // Handle PDF generation
               $('#accept-document').click(function() {
-                generatePDF(filledProposal, filledNDA, filledDataProtection, signatureDataUrl);
+                // Use the entire filledPreviewContent for PDF generation
+                generatePDF(filledPreviewContent, signatureDataUrl);
               });
             });
           });
