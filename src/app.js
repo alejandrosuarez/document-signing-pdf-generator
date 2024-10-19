@@ -48,14 +48,26 @@ $(document).ready(function() {
       name: "Customer Name",
       company: "Customer Company",
       email: "Customer Email",
-      agree: "I Agree"
-    },
-    es: {
+      agree: "Print document",
+      signature: "Customer Signature",
+      choose: "Choose a language",
+      documentTitle: "Document Signature",
+      clearSignature: "Clear Signature",
+      previewDocument: "Preview Document",
+      submitButton: "Sign and Accept"
+  },
+  es: {
       name: "Nombre del Cliente",
       company: "Empresa del Cliente",
       email: "Correo del Cliente",
-      agree: "Estoy de acuerdo"
-    }
+      agree: "Imprimir documento",
+      signature: "Firma del Cliente",
+      choose: "Elige un idioma",
+      documentTitle: "Firma de Documento",
+      clearSignature: "Limpiar Firma",
+      previewDocument: "Vista Previa del Documento",
+      submitButton: "Firmar y Aceptar"
+  }
   };
 
   let userData = {
@@ -206,21 +218,36 @@ $(document).ready(function() {
     });
   }
 
-function loadSignaturePreview(signature) {
-  if (signature) {
+  function loadSignaturePreview(signature) {
+    if (signature) {
+        // Get all img elements with the class "signature-preview"
+        const signatureElements = document.querySelectorAll('.signature-preview');
+
+        // Set the signature image src to each img element
+        signatureElements.forEach(function (element) {
+            element.src = signature;  // Set the src attribute to the signature data URL
+        });
+    }
+  }
+
+  // Modal preview logic
+  $('#upload-files-btn').click(function() {
+      // Inject the initial content into the modal
+      // Get the user UID from localStorage
+      const signatureUserUid = 'http://react-secure-uploads-eosin.vercel.app/?userid=' + localStorage.getItem('user.uid') || '';
       // Get all img elements with the class "signature-preview"
-      const signatureElements = document.querySelectorAll('.signature-preview');
+      const uploadFilesIframe = document.getElementById('upload-files-iframe');
 
       // Set the signature image src to each img element
-      signatureElements.forEach(function (element) {
-          element.src = signature;  // Set the src attribute to the signature data URL
-      });
-  }
-}
+      uploadFilesIframe.src = signatureUserUid;  // Set the src attribute to the signature data URL
 
+      // Show the modal after ensuring the signature is injected
+      $('#uploadFilesModal').modal('show');
+  });
 
-  // Trigger loading content even if the user hasn't typed anything yet
-  loadContentAndTemplates('en', userData);
+  // Trigger loading content using saved language from localStorage, or default to 'en' if not set
+  const savedLanguage = localStorage.getItem('user.language') || 'en';  // Load saved language or default to 'en'
+  loadContentAndTemplates(savedLanguage, userData);
 
   // Language switch handling
   $('#language-select').change(function() {
@@ -231,6 +258,13 @@ function loadSignaturePreview(signature) {
     $('#company-label').text(formLabels[selectedLang].company + ":");
     $('#email-label').text(formLabels[selectedLang].email + ":");
     $('#print-modal-content').text(formLabels[selectedLang].agree);
+    $('#signature-label').text(formLabels[selectedLang].signature);
+    $('#language-label').text(formLabels[selectedLang].choose + ":");
+    $('#document-title').text(formLabels[selectedLang].documentTitle);
+    $('#clear-signature').text(formLabels[selectedLang].clearSignature);
+    $('#preview-document').text(formLabels[selectedLang].previewDocument);
+    $('#previewModalLabel').text(formLabels[selectedLang].previewDocument);
+    $('#submit-button').text(formLabels[selectedLang].submitButton);
 
     // Reload the templates with the selected language
     loadContentAndTemplates(selectedLang, userData);
