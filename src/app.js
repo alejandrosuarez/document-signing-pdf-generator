@@ -172,12 +172,26 @@ $(document).ready(function() {
   
               // After everything is loaded and inserted:
               hideLoadingOverlay();  // Hide loading overlay when done
+
+              // Now that the template is loaded, call the function to load the signature
+              const signature = localStorage.getItem('user.signature') || '';
+              loadSignaturePreview(signature);
   
               // Modal preview logic
               $('#preview-document').click(function() {
-                // Inject content into modal
-                $('#preview-content').html(filledPreviewContent);
-                $('#previewModal').modal('show');
+                  // Inject the initial content into the modal
+                  $('#preview-content').html(filledPreviewContent);
+              
+                  // After the content is injected, check if there is a signature in localStorage
+                  const signature = localStorage.getItem('user.signature') || '';
+              
+                  // If signature exists, update the `src` attribute of the image with the class `signature-preview`
+                  if (signature) {
+                      $('.signature-preview').attr('src', signature);
+                  }
+              
+                  // Show the modal after ensuring the signature is injected
+                  $('#previewModal').modal('show');
               });
   
               // Handle PDF generation
@@ -191,6 +205,19 @@ $(document).ready(function() {
       });
     });
   }
+
+function loadSignaturePreview(signature) {
+  if (signature) {
+      // Get all img elements with the class "signature-preview"
+      const signatureElements = document.querySelectorAll('.signature-preview');
+
+      // Set the signature image src to each img element
+      signatureElements.forEach(function (element) {
+          element.src = signature;  // Set the src attribute to the signature data URL
+      });
+  }
+}
+
 
   // Trigger loading content even if the user hasn't typed anything yet
   loadContentAndTemplates('en', userData);
