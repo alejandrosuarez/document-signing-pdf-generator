@@ -9,6 +9,7 @@
       "start": "vercel start"
     },
     "dependencies": {
-      "@supabase/supabase-js": "^2.0.0"  // Ensure to add Supabase
+      "@supabase/supabase-js": "^2.0.0",
+      "html2canvas": "^1.4.1"
     }
   }
