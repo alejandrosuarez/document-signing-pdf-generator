@@ -123,8 +123,8 @@ Once deployed, your app will be live at:
 
 We plan to add more exciting features in future versions:
 
-- 🔐 **API Integration** for document storage and retrieval
-- 👤 **User Authentication** for secure access
+- 🔐 **API Integration** for document storage and retrieval ✅ (Done)
+- 👤 **User Authentication** for secure access ✅ (Done)
 
 ### 🙌 Contributing
 
