@@ -1,15 +1,17 @@
 // Initialize Supabase in formHandler.js (if not already initialized)
-if (typeof supabaseClient === 'undefined') {
-    const SUPABASE_URL = window.env ? window.env.SUPABASE_URL : process.env.SUPABASE_URL;
-    const SUPABASE_ANON_KEY = window.env ? window.env.SUPABASE_ANON_KEY : process.env.SUPABASE_ANON_KEY;
+let SUPABASE_URL;
+let SUPABASE_ANON_KEY;
 
-    // Check if supabase is defined (loaded via CDN)
-    if (typeof supabase !== 'undefined') {
-      var supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      console.log("Supabase Client Initialized:", supabaseClient);
-    } else {
-      console.error('Supabase is not defined. Please check the script source or import.');
-    }
+if (typeof process !== 'undefined' && process.env && process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    // Running on Vercel (production environment)
+    SUPABASE_URL = process.env.SUPABASE_URL;
+    SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+} else if (typeof window !== 'undefined' && window.env) {
+    // Running locally (development environment with hardcoded-env.js)
+    SUPABASE_URL = window.env.SUPABASE_URL;
+    SUPABASE_ANON_KEY = window.env.SUPABASE_ANON_KEY;
+} else {
+    console.error("Supabase configuration not found!");
 }
 
 // Function to load form data from localStorage and populate fields
