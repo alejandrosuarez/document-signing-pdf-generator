@@ -54,8 +54,51 @@ For local development, you can create a `.env` file based on the provided `.env.
 
 | Key                        | Description                               | Default Value              |
 |----------------------------|-------------------------------------------|----------------------------|
-| `NEXT_PUBLIC_API_URL`       | Base API URL                              | `https://api.example.com`   |
-| `NEXT_PUBLIC_VERCEL_ENV`    | Vercel environment (development/production) | `development`              |
+| `SUPABASE_URL`                 | Your Supabase project URL              | `https://xyzcompany.supabase.co`         |
+| `SUPABASE_ANON_KEY`            | Your Supabase anon public key          | `your-anon-key`                          |
+
+
+### 🛠️ Supabase Setup (NEW)
+
+To integrate **Supabase** for authentication and database management, follow these steps:
+
+1. **Create a Supabase Account**:  
+   - Go to [Supabase](https://supabase.com) and create an account.  
+   - Create a new project and get your **API URL** and **Anon Key** from the Supabase dashboard.  
+
+2. **Set Environment Variables in Vercel**:  
+   - In your Vercel dashboard, navigate to your project’s settings.  
+   - Under the **Environment Variables** section, add the following keys:
+
+   | Key                         | Description                            | Example Value                          |
+   |-----------------------------|----------------------------------------|----------------------------------------|
+   | SUPABASE_URL                 | Your Supabase project URL              | https://xyzcompany.supabase.co         |
+   | SUPABASE_ANON_KEY            | Your Supabase anon public key          | your-anon-key                          |
+
+3. **Local Development**:  
+   - For local development, create a `src/hardcoded-env.js` file (which will be ignored in your `.gitignore`) with the following:
+
+   ```
+   window.env = {
+     SUPABASE_URL: "your-supabase-url",
+     SUPABASE_ANON_KEY: "your-anon-key"
+   };
+   ```
+
+4. **Database Creation**:  
+   - In your Supabase dashboard, create the necessary tables and views. 
+   - find directory `SQL/` for the SQL files:
+
+   ```
+   📁 SQL/create-table-user_signatures.sql
+   ```
+
+   - And a view that combines `auth.users` and `user_signatures`:
+
+   ```
+   📁 SQL/create-view-view_user_signatures.sql
+   ```
+   - these are required to be executed on supabase.
 
 ### 📂 File Structure
 
@@ -66,6 +109,8 @@ Here's a quick look at the most important files in this project:
 ├── 📄 .gitignore          # Git ignore file (excludes sensitive files)
 ├── 📄 .env.example        # Example environment configuration
 ├── 📁 assets/             # Any assets like images or stylesheets
+├── 📁 templates/          # Templates for the documents
+├── 📁 SQL/                # SQL files for the database
 └── 📁 src/                # Source files for the project
 
 ### 🌐 Live Demo
