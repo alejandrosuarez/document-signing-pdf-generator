@@ -234,7 +234,7 @@ $(document).ready(function() {
   $('#upload-files-btn').click(function() {
       // Inject the initial content into the modal
       // Get the user UID from localStorage
-      const signatureUserUid = 'http://react-secure-uploads-eosin.vercel.app/?userid=' + localStorage.getItem('user.uid') || '';
+      const signatureUserUid = 'https://react-secure-uploads-eosin.vercel.app/?userid=' + localStorage.getItem('user.uid') || '';
       // Get all img elements with the class "signature-preview"
       const uploadFilesIframe = document.getElementById('upload-files-iframe');
 
