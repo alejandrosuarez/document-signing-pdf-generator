@@ -1,0 +1,14 @@
+{
+    "name": "document-signing-pdf-generator",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "dev": "vercel dev",
+      "build": "vercel build",
+      "start": "vercel start"
+    },
+    "dependencies": {
+      "@supabase/supabase-js": "^2.0.0"  // Ensure to add Supabase
+    }
+  }
