@@ -2,7 +2,6 @@ import { generatePDF } from './pdfGenerator.js';  // Import the generatePDF func
 // Function to check if the user is logged in
 function checkLoginStatus() {
   const session = localStorage.getItem('supabaseClient.auth.token');
-  console.log('Session token found:', session); // Log session for debugging
   
   if (!session || session === 'null' || session === 'undefined') {
     console.log('No valid session found. Redirecting to login page...');
