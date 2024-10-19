@@ -2,11 +2,6 @@
 if (typeof supabase === 'undefined') {
     console.error('Supabase is not loaded. Check the script source.');
 } else {
-    // Initialize Supabase Client
-    // Initialize Supabase Client
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase Client Initialized:', supabaseClient);
-
     // Login function that calls Vercel API
     async function loginUser(email, password) {
         const response = await fetch('/api/login', {
