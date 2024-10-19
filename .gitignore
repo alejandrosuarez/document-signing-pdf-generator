@@ -43,3 +43,6 @@ coverage/
 
 # py files
 *.py
+
+# Ignore environment files
+hardcoded-env.js

@@ -164,6 +164,10 @@
 </head>
 <body>
   <div class="container mt-5">
+      <h2 class="text-center">Welcome to the Dashboard</h2>
+      <button id="logout-btn" class="btn btn-danger">Logout</button>
+  </div>
+  <div class="container mt-5">
     <h2 class="text-center">Document Signature</h2>
     <!-- Dark Mode Toggle -->
     <div class="text-right">
@@ -205,6 +209,7 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <form id="form">
+          <input hidden id="user-uid" value="">
           <div class="form-group">
             <label for="name" id="name-label">Customer Name:</label>
             <input type="text" class="form-control" id="name" required>
@@ -225,6 +230,8 @@
           <!-- Preview and Generate Buttons -->
           <div class="row justify-content-center mt-4">
             <button type="button" id="preview-document" class="btn btn-info">Preview Document</button>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
             <!--<button type="button" id="accept-document" class="btn btn-primary">Generate PDF</button>-->
           </div>
         </form>
@@ -238,9 +245,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="previewModalLabel">Document Preview</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body" id="preview-content">
           <!-- Preview content will go here -->
@@ -265,5 +270,11 @@
   <!-- Custom JS Files -->
   <script type="module" src="src/app.js"></script>
   <script type="module" src="src/pdfGenerator.js"></script>
+  <!-- Load Supabase Script (if not globally available) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <!-- Include environment variables script for local testing -->
+  <script src="src/hardcoded-env.js"></script>
+  <!-- Include form handling logic -->
+  <script src="src/formHandler.js"></script>
 </body>
 </html>

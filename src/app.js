@@ -1,6 +1,44 @@
 import { generatePDF } from './pdfGenerator.js';  // Import the generatePDF function
+// Function to check if the user is logged in
+function checkLoginStatus() {
+  const session = localStorage.getItem('supabaseClient.auth.token');
+  console.log('Session token found:', session); // Log session for debugging
+  
+  if (!session || session === 'null' || session === 'undefined') {
+    console.log('No valid session found. Redirecting to login page...');
+    window.location.href = 'login.html'; // Redirect to login if no session is found
+  } else {
+    console.log('User is logged in. Proceed to dashboard.');
+  }
+}
+
+// Run the login status check when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  checkLoginStatus();
+});
+
+// Handle logout button click
+document.getElementById('logout-btn').addEventListener('click', function() {
+  logoutUser();
+});
+
+// Logout function
+function logoutUser() {
+  // Remove the session token and all user-related data from localStorage
+  localStorage.removeItem('supabaseClient.auth.token'); 
+  localStorage.removeItem('user.name'); 
+  localStorage.removeItem('user.email');
+  localStorage.removeItem('user.company');
+  localStorage.removeItem('user.uid');
+  localStorage.removeItem('user.language');
+  localStorage.removeItem('user.signature');
+  
+  // Redirect to login page after logout
+  window.location.href = 'login.html';
+}
 
 $(document).ready(function() {
+  
   // Show loading overlay immediately when the page is ready
   showLoadingOverlay();
   detectSystemDarkMode();  // Apply the correct mode on load
@@ -227,32 +265,35 @@ $(document).ready(function() {
   $('#signature-pad').on('mouseup touchend mouseleave', function() {
     drawing = false;
     path = null;  // Reset path to null after drawing is finished
-  
+
     const svgString = $('#signature-pad').html();
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
     const img = new Image();
-  
+
     img.onload = function() {
       canvas.width = 500;
       canvas.height = 150;
       ctx.drawImage(img, 0, 0);
       const customerSignatureDataUrl = canvas.toDataURL('image/png');  // Capture the signature as PNG
-  
+
+      // Store the customer signature in localStorage
+      localStorage.setItem('user.signature', customerSignatureDataUrl);  // Save to localStorage
+
       // Store the customer signature in userData for placeholder replacement
       userData['CUSTOMER_SIGNATURE_PATH'] = customerSignatureDataUrl;
       console.log('Customer signature data URL:', customerSignatureDataUrl);
 
       // Update the preview with the customer signature immediately
       $('#customer-signature-preview').attr('src', customerSignatureDataUrl);
-      
+
       // Reload the templates with the updated user data to ensure the preview reflects the change live
       const selectedLang = $('#language-select').val();
       loadContentAndTemplates(selectedLang, userData);
     };
-  
+
     img.src = url;
   });
 
