@@ -10,23 +10,66 @@ function loadFormData() {
     document.getElementById('name').value = name;
     document.getElementById('company').value = company;
     document.getElementById('email').value = email;
+    document.getElementById('language-select').value = language;  // Set dropdown to saved language
 
-    // Set the language dropdown to the saved language
-    document.getElementById('language-select').value = language;
+    // Update form labels based on saved language
+    updateFormLabels(language);
 
     // If signature exists, show it
     if (signature) {
-      const img = new Image();
-      img.src = signature;
-      img.width = 300;
-      img.height = 150;
-      document.getElementById('signature-pad').appendChild(img);
+        const img = new Image();
+        img.src = signature;
+        img.width = 300;
+        img.height = 150;
+        document.getElementById('signature-pad').appendChild(img);
     }
 
     // If data exists, make fields inactive
     if (name && company && email) {
-      disableFormFields();
+        disableFormFields();
     }
+}
+
+// Function to update form labels based on selected language
+function updateFormLabels(language) {
+    const formLabels = {
+        en: {
+            name: "Customer Name",
+            company: "Customer Company",
+            email: "Customer Email",
+            agree: "Print document",
+            signature: "Customer Signature",
+            choose: "Choose a language",
+            documentTitle: "Document Signature",
+            clearSignature: "Clear Signature",
+            previewDocument: "Preview Document",
+            submitButton: "Sign and Accept"
+        },
+        es: {
+            name: "Nombre del Cliente",
+            company: "Empresa del Cliente",
+            email: "Correo del Cliente",
+            agree: "Imprimir documento",
+            signature: "Firma del Cliente",
+            choose: "Elige un idioma",
+            documentTitle: "Firma de Documento",
+            clearSignature: "Limpiar Firma",
+            previewDocument: "Vista Previa del Documento",
+            submitButton: "Firmar y Aceptar"
+        }
+    };
+
+    $('#name-label').text(formLabels[language].name + ":");
+    $('#company-label').text(formLabels[language].company + ":");
+    $('#email-label').text(formLabels[language].email + ":");
+    $('#print-modal-content').text(formLabels[language].agree);
+    $('#signature-label').text(formLabels[language].signature);
+    $('#language-label').text(formLabels[language].choose + ":");
+    $('#document-title').text(formLabels[language].documentTitle);
+    $('#clear-signature').text(formLabels[language].clearSignature);
+    $('#preview-document').text(formLabels[language].previewDocument);
+    $('#previewModalLabel').text(formLabels[language].previewDocument);
+    $('#submit-button').text(formLabels[language].submitButton);
 }
 
 // Function to disable the form fields
@@ -37,6 +80,9 @@ function disableFormFields() {
     document.getElementById('language-select').disabled = true; // Disable language dropdown
     document.getElementById('signature-pad').style.pointerEvents = 'none';
     document.getElementById('clear-signature').disabled = true;
+    document.getElementById('submit-button').disabled = true;
+    document.getElementById('upload-files-btn').disabled = false;
+    document.getElementById('upload-files-btn').style.display = 'inline-block';
 }
 
 // Function to handle form submission

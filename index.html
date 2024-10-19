@@ -164,19 +164,21 @@
 </head>
 <body>
   <div class="container mt-5">
-      <h2 class="text-center">Welcome to the Dashboard</h2>
       <button id="logout-btn" class="btn btn-danger">Logout</button>
+      <button id="upload-files-btn" class="btn btn-primary" disabled style="display: none;">Upload Files</button>
   </div>
   <div class="container mt-5">
-    <h2 class="text-center">Document Signature</h2>
+    <h2 class="text-center" id="document-title">Document Signature</h2>
     <!-- Dark Mode Toggle -->
+    <!--
     <div class="text-right">
       <button id="toggle-dark-mode" class="btn btn-dark">Toggle Dark Mode</button>
     </div>
+    -->
     <!-- Language and Document Selection -->
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <label for="language-select">Choose Language / Elija idioma:</label>
+        <label for="language-select" id="language-label">Choose Language</label>
         <select id="language-select" class="form-control">
           <option value="en">English</option>
           <option value="es">Español</option>
@@ -185,7 +187,7 @@
     </div>
 
     <!-- Document Display Area -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="display: none;">
       <div class="col-md-8">
         <h5 class="text-center mt-4">Document Preview</h5>
         <!-- The document area will only show the content -->
@@ -223,7 +225,7 @@
             <input type="email" class="form-control" id="email" required>
           </div>
 
-          <h5>Draw Your Signature</h5>
+          <h5 id="signature-label">Draw Your Signature</h5>
           <div id="signature-pad" class="signature-pad" ontouchmove="event.preventDefault();"></div>
           <button type="button" id="clear-signature" class="btn btn-secondary">Clear Signature</button>
 
@@ -231,7 +233,7 @@
           <div class="row justify-content-center mt-4">
             <button type="button" id="preview-document" class="btn btn-info">Preview Document</button>
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
+            <button type="submit" class="btn btn-primary btn-block mt-4" id="submit-button">Submit</button>
             <!--<button type="button" id="accept-document" class="btn btn-primary">Generate PDF</button>-->
           </div>
         </form>
@@ -250,7 +252,21 @@
         <div class="modal-body" id="preview-content">
           <!-- Preview content will go here -->
         </div>
-        <button id="print-modal-content" class="btn btn-primary">I Agree</button>
+        <button id="print-modal-content" class="btn btn-primary">Print</button>
+      </div>
+    </div>
+  </div>
+  <!-- Upload Files Modal -->
+  <div class="modal fade" id="uploadFilesModal" tabindex="-1" aria-labelledby="uploadFilesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadFilesModalLabel">Upload Files</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body" id="preview-content">
+          <iframe id="upload-files-iframe" src="" width="100%" height="600px"></iframe>
+        </div>
       </div>
     </div>
   </div>
