@@ -103,6 +103,7 @@ To integrate **Supabase** for authentication and database management, follow the
 ### 📂 File Structure
 
 Here's a quick look at the most important files in this project:
+```
 📁 document-signing-pdf-generator
 ├── 📄 index.html          # Main HTML file
 ├── 📄 README.md           # Project README with instructions
@@ -112,7 +113,7 @@ Here's a quick look at the most important files in this project:
 ├── 📁 templates/          # Templates for the documents
 ├── 📁 SQL/                # SQL files for the database
 └── 📁 src/                # Source files for the project
-
+```
 ### 🌐 Live Demo
 
 Once deployed, your app will be live at:  
@@ -122,8 +123,8 @@ Once deployed, your app will be live at:
 
 We plan to add more exciting features in future versions:
 
-- 🔐 **API Integration** for document storage and retrieval
-- 👤 **User Authentication** for secure access
+- 🔐 **API Integration** for document storage and retrieval ✅ (Done)
+- 👤 **User Authentication** for secure access ✅ (Done)
 
 ### 🙌 Contributing
 
