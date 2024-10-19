@@ -14,42 +14,34 @@ if (typeof supabase === 'undefined') {
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('Supabase Client Initialized:', supabaseClient);
 
-    // Login function in auth.js
+    // Login function that calls Vercel API
     async function loginUser(email, password) {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) {
-            return { success: false, message: error.message };
+        const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            const userId = result.userData.user_id;
+
+            // Save session and user data to localStorage
+            localStorage.setItem('supabaseClient.auth.token', JSON.stringify(result.session));
+            localStorage.setItem('user.uid', userId);
+            localStorage.setItem('user.name', result.userData.name || '');
+            localStorage.setItem('user.company', result.userData.company || '');
+            localStorage.setItem('user.email', result.userData.email || email);  // Fallback to email used for login
+            localStorage.setItem('user.signature', result.userData.signature || '');
+            localStorage.setItem('user.language', result.userData.language || 'en');
+            
+            return { success: true };
+        } else {
+            return { success: false, message: result.error };
         }
-
-        const userId = data.user.id;
-
-        // Save session to localStorage to track login status
-        //localStorage.setItem('supabase.auth.token', JSON.stringify(data));
-        localStorage.setItem('supabaseClient.auth.token', JSON.stringify(data.session));
-
-        // After successful login, load the user data from 'view_user_signatures' table
-        const { data: userData, error: userError } = await supabaseClient
-            .from('view_user_signatures')
-            .select('*')
-            .eq('user_id', userId)
-            .single();  // Assuming one record per user
-
-        if (userError) {
-            console.error('Error loading user data:', userError.message);
-            return { success: true, data };  // Proceed with login even if user data can't be loaded
-        }
-
-        // Save the fetched data to localStorage
-        if (userData) {
-            localStorage.setItem('user.uid', userData.user_id);
-            localStorage.setItem('user.name', userData.name || '');
-            localStorage.setItem('user.company', userData.company || '');
-            localStorage.setItem('user.email', userData.email || email);  // Fallback to email used for login
-            localStorage.setItem('user.signature', userData.signature || '');
-            localStorage.setItem('user.language', userData.language || 'en');  // Fallback to 'en' if language isn't set
-        }
-
-        return { success: true, data };
     }
 
     // Handle form submission for login

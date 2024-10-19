@@ -57,47 +57,36 @@ function disableFormFields() {
 async function handleSubmit(event) {
     event.preventDefault();
 
-    const userId = localStorage.getItem('user.uid');  // Retrieve user ID from localStorage
+    const userId = localStorage.getItem('user.uid');
     const name = document.getElementById('name').value;
     const company = document.getElementById('company').value;
-    const email = document.getElementById('email').value;
-    const signature = localStorage.getItem('user.signature') || '';  // Retrieve the signature data URL from localStorage
-    const language = document.getElementById('language-select').value;  // Get the selected language from the dropdown
+    const signature = localStorage.getItem('user.signature') || '';
+    const language = document.getElementById('language-select').value;
 
-    // Ensure that Supabase client is initialized
-    if (!supabaseClient) {
-      console.error('Supabase client is not initialized.');
-      return;
-    }
+    // Send data to the API to save it
+    const response = await fetch('/api/saveForm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, name, company, signature, language })
+    });
 
-    // Save data to Supabase
-    const { data, error } = await supabaseClient
-      .from('user_signatures')
-      .insert([
-        {
-          user_id: userId,
-          name: name,
-          company: company,
-          //email: email,
-          signature: signature,
-          language: language  // Save the selected language
-        }
-      ]);
+    const result = await response.json();
 
-    if (error) {
-      console.error('Error saving data:', error.message);
+    if (response.ok) {
+        console.log('Data saved successfully:', result.data);
+
+        // Save data to localStorage
+        localStorage.setItem('user.name', name);
+        localStorage.setItem('user.company', company);
+        localStorage.setItem('user.signature', signature);
+        localStorage.setItem('user.language', language);
+
+        // Disable form fields after submission
+        disableFormFields();
     } else {
-      console.log('Data saved successfully:', data);
-
-      // Save data to localStorage
-      localStorage.setItem('user.name', name);
-      localStorage.setItem('user.company', company);
-      localStorage.setItem('user.email', email);
-      localStorage.setItem('user.signature', signature);
-      localStorage.setItem('user.language', language);  // Save the selected language to localStorage
-
-      // Disable form fields after submission
-      disableFormFields();
+        console.error('Error saving data:', result.error);
     }
 }
 
