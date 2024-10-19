@@ -1,18 +1,3 @@
-let SUPABASE_URL;
-let SUPABASE_ANON_KEY;
-
-if (typeof process !== 'undefined' && process.env && process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
-    // Running on Vercel (production environment)
-    SUPABASE_URL = process.env.SUPABASE_URL;
-    SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
-} else if (typeof window !== 'undefined' && window.env) {
-    // Running locally (development environment with hardcoded-env.js)
-    SUPABASE_URL = window.env.SUPABASE_URL;
-    SUPABASE_ANON_KEY = window.env.SUPABASE_ANON_KEY;
-} else {
-    console.error("Supabase configuration not found!");
-}
-
 // Check if Supabase is available
 if (typeof supabase === 'undefined') {
     console.error('Supabase is not loaded. Check the script source.');
